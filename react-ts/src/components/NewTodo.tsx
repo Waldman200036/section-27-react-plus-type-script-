@@ -1,9 +1,9 @@
 import classes from './NewTodo.module.css'
-// import Todo from '../models/todo';
-import { useRef } from "react";
-// import Todos from './Todos';
+import { useRef, useContext } from "react";
 
-const NewTodo: React.FC<{ onAddTodo: (text: string) => void, onRemoveTodo: (id: string) => void }> = (props) => {
+import { TodosContext } from '../store/todos-context';
+const NewTodo: React.FC = () => {
+ const todosCtx = useContext(TodosContext)
   const todoTextInputRef = useRef<HTMLInputElement>(null);
 
   const submitHandler = (event: React.FormEvent) => {
@@ -15,7 +15,7 @@ const NewTodo: React.FC<{ onAddTodo: (text: string) => void, onRemoveTodo: (id: 
       // throw an error
       return;
     }
-    props.onAddTodo(enteredText);
+    todosCtx.addTodo(enteredText);
   };
 
   const removeHandler = (event: React.FormEvent) => {
@@ -25,7 +25,7 @@ const NewTodo: React.FC<{ onAddTodo: (text: string) => void, onRemoveTodo: (id: 
     const enteredText = todoTextInputRef.current?.value!
 
 
-    props.onRemoveTodo(enteredText);
+    todosCtx.removeTodo(enteredText);
   };
   return <form onSubmit={submitHandler} className={classes.form}>
     <label htmlFor="text" onClick={removeHandler}>Todo Text</label>
